@@ -198,10 +198,15 @@ function renderArticles() {
     card.setAttribute('itemscope', '');
     card.setAttribute('itemtype', 'https://schema.org/NewsArticle');
 
-    const isNew = new Date() - new Date(article.date) < 86400000 * 2;
+    const isNew    = new Date() - new Date(article.date) < 86400000 * 2;
+    const catEmoji = { devops: '⚙️', networks: '📡', gaming: '🎮' };
+    const idx      = (counts[article.category] || 0);
 
     card.innerHTML = `
-      <div class="card-stripe"></div>
+      <div class="card-thumbnail">
+        <span class="thumb-emoji">${catEmoji[article.category] || '📄'}</span>
+        <span class="thumb-num">0${idx}</span>
+      </div>
       <div class="card-body">
         <div class="article-meta">
           <span class="category-badge">${article.category}</span>

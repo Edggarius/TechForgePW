@@ -4,89 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO Primary -->
     <title>TechForge | DevOps, Redes Wi-Fi 7 & Gaming Labs</title>
-    <meta name="description" content="Tutoriales técnicos actualizados diariamente: automatización DevOps con n8n y Jira, configuración de redes Wi-Fi 7 en modo puente, y optimización para gaming competitivo.">
+    <meta name="description" content="Tutoriales técnicos actualizados diariamente: automatización DevOps con n8n y Jira, configuración de redes Wi-Fi 7 y optimización para gaming competitivo.">
+    <meta name="author" content="Jose Edgar Vieyra Calderon">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://techforge.dev/">
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="TechForge | DevOps, Redes Wi-Fi 7 & Gaming Labs">
-    <meta property="og:description" content="Tutoriales técnicos actualizados diariamente: automatización DevOps, configuración de redes Wi-Fi 7 y optimización para gaming competitivo.">
+    <meta property="og:description" content="Tutoriales técnicos actualizados diariamente por IA.">
     <meta property="og:url" content="https://techforge.dev/">
     <meta property="og:site_name" content="TechForge">
     <meta property="og:locale" content="es_ES">
 
-    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="TechForge | DevOps, Redes & Gaming Labs">
-    <meta name="twitter:description" content="Tutoriales técnicos de DevOps, redes Wi-Fi 7 y gaming actualizados diariamente a las 6 AM.">
+    <meta name="twitter:description" content="Tutoriales técnicos actualizados a las 6 AM por IA.">
 
-    <!-- JSON-LD: WebSite Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "TechForge",
       "url": "https://techforge.dev",
+      "author": { "@type": "Person", "name": "Jose Edgar Vieyra Calderon" },
       "description": "Portal de tecnología con tutoriales de DevOps, redes Wi-Fi 7 y gaming actualizados diariamente.",
-      "inLanguage": "es",
-      "publisher": {
-        "@type": "Organization",
-        "name": "TechForge",
-        "url": "https://techforge.dev"
-      }
+      "inLanguage": "es"
     }
     </script>
 
-    <!-- Fuente sin bloqueo de render -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
 
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Navbar -->
+    <!-- ── NAVBAR ──────────────────────────────── -->
     <header class="navbar">
         <div class="container nav-content">
             <a href="/" class="logo-link" aria-label="TechForge inicio">
-                <p class="logo">Tech<span>Forge</span></p>
-                <span class="logo-badge">Beta</span>
+                <div class="logo-wrap">
+                    <p class="logo">Tech<span>Forge</span></p>
+                    <span class="logo-ai-badge">AI</span>
+                </div>
             </a>
+
             <nav class="nav-links" aria-label="Categorías">
-                <a href="#devops-feed"><span class="nav-dot" style="background:#1d4ed8"></span>DevOps & Infra</a>
-                <a href="#networks-feed"><span class="nav-dot" style="background:#059669"></span>Redes</a>
-                <a href="#gaming-feed"><span class="nav-dot" style="background:#7c3aed"></span>Gaming Labs</a>
+                <a href="#devops-feed" class="nav-item">
+                    <span class="nav-icon">⚙️</span>DevOps
+                </a>
+                <a href="#networks-feed" class="nav-item">
+                    <span class="nav-icon">📡</span>Redes
+                </a>
+                <a href="#gaming-feed" class="nav-item">
+                    <span class="nav-icon">🎮</span>Gaming
+                </a>
             </nav>
+
+            <div class="nav-right">
+                <div class="live-badge">
+                    <span class="live-dot"></span>
+                    En vivo
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- Barra de última actualización -->
-    <div class="update-bar">
-        <div class="container update-bar-inner">
-            <span class="update-dot" aria-hidden="true"></span>
-            Contenido actualizado hoy a las <strong>6:00 AM</strong> &mdash; 6 artículos nuevos
+    <!-- ── HERO ────────────────────────────────── -->
+    <section class="hero">
+        <div class="hero-orb orb-blue"></div>
+        <div class="hero-orb orb-purple"></div>
+        <div class="hero-orb orb-green"></div>
+        <div class="container hero-content">
+            <div class="hero-eyebrow">
+                <span class="eyebrow-dot"></span>
+                Actualizado hoy · <strong id="hero-date"></strong>
+            </div>
+            <h1 class="hero-title">Tecnología que<br><span class="hero-gradient">mueve el mundo.</span></h1>
+            <p class="hero-subtitle">Tutoriales técnicos generados por IA y publicados cada mañana a las 6 AM — sin intervención humana.</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-num">6</span>
+                    <span class="stat-label">Artículos hoy</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-num">3</span>
+                    <span class="stat-label">Categorías</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-num">6 AM</span>
+                    <span class="stat-label">Publicación diaria</span>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Leaderboard Ad -->
-    <div class="ad-zone top-ad">
+    <!-- ── AD LEADERBOARD ─────────────────────── -->
+    <div class="ad-zone">
         <div class="container">
             <div class="ad-placeholder ad-leaderboard">Espacio Publicitario — Leaderboard 728×90</div>
         </div>
     </div>
 
-    <!-- Grid principal -->
+    <!-- ── GRID PRINCIPAL ─────────────────────── -->
     <main class="container main-grid" id="main-content">
 
         <section id="devops-feed" class="category-feed" data-category="devops" aria-labelledby="label-devops">
             <div class="category-header">
-                <span class="category-icon">⚙️</span>
-                <h2 id="label-devops">DevOps & Workspace</h2>
+                <div class="category-header-icon">⚙️</div>
+                <div class="category-header-info">
+                    <h2 id="label-devops">DevOps & Workspace</h2>
+                    <p class="category-desc">Automatización · CI/CD · Cloud</p>
+                </div>
                 <span class="article-count" id="count-devops"></span>
             </div>
             <div class="articles-container" id="container-devops"></div>
@@ -94,8 +128,11 @@
 
         <section id="networks-feed" class="category-feed" data-category="networks" aria-labelledby="label-networks">
             <div class="category-header">
-                <span class="category-icon">📡</span>
-                <h2 id="label-networks">Redes & Ecosistemas</h2>
+                <div class="category-header-icon">📡</div>
+                <div class="category-header-info">
+                    <h2 id="label-networks">Redes & Ecosistemas</h2>
+                    <p class="category-desc">Wi-Fi 7 · Routers · Infraestructura</p>
+                </div>
                 <span class="article-count" id="count-networks"></span>
             </div>
             <div class="articles-container" id="container-networks"></div>
@@ -103,8 +140,11 @@
 
         <section id="gaming-feed" class="category-feed" data-category="gaming" aria-labelledby="label-gaming">
             <div class="category-header">
-                <span class="category-icon">🎮</span>
-                <h2 id="label-gaming">Gaming Labs</h2>
+                <div class="category-header-icon">🎮</div>
+                <div class="category-header-info">
+                    <h2 id="label-gaming">Gaming Labs</h2>
+                    <p class="category-desc">FPS · Platinos · Optimización</p>
+                </div>
                 <span class="article-count" id="count-gaming"></span>
             </div>
             <div class="articles-container" id="container-gaming"></div>
@@ -112,18 +152,73 @@
 
     </main>
 
+    <!-- ── FOOTER ──────────────────────────────── -->
     <footer class="site-footer">
-        <div class="container footer-content">
-            <p class="footer-logo">Tech<span>Forge</span></p>
-            <p class="footer-tagline">Contenido técnico generado y actualizado automáticamente todos los días a las 6 AM.</p>
-            <div class="footer-links">
-                <a href="#devops-feed">DevOps</a>
-                <a href="#networks-feed">Redes</a>
-                <a href="#gaming-feed">Gaming</a>
+        <div class="footer-orb footer-orb-1"></div>
+        <div class="footer-orb footer-orb-2"></div>
+
+        <div class="container footer-inner">
+
+            <!-- Brand -->
+            <div class="footer-brand">
+                <p class="footer-logo">Tech<span>Forge</span></p>
+                <p class="footer-tagline">Tecnología que mueve el mundo.<br>Contenido generado por IA, publicado cada día a las 6 AM.</p>
+                <div class="footer-powered">
+                    <span class="powered-badge">⚡ Powered by Claude AI</span>
+                </div>
+            </div>
+
+            <!-- Col: Categorías -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Categorías</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#devops-feed">⚙️ DevOps & Workspace</a></li>
+                    <li><a href="#networks-feed">📡 Redes & Ecosistemas</a></li>
+                    <li><a href="#gaming-feed">🎮 Gaming Labs</a></li>
+                </ul>
+            </div>
+
+            <!-- Col: Proyecto -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">El Proyecto</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#">Acerca de TechForge</a></li>
+                    <li><a href="#">Cómo funciona la IA</a></li>
+                    <li><a href="#">Monetización</a></li>
+                    <li><a href="https://github.com/Edggarius/TechForgePW" target="_blank" rel="noopener">GitHub</a></li>
+                </ul>
+            </div>
+
+            <!-- Col: Legal -->
+            <div class="footer-col">
+                <h4 class="footer-col-title">Legal</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#">Política de Privacidad</a></li>
+                    <li><a href="#">Términos de Uso</a></li>
+                    <li><a href="#">Política de Cookies</a></li>
+                    <li><a href="#">Publicidad</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Footer bottom -->
+        <div class="footer-bottom">
+            <div class="container footer-bottom-inner">
+                <p class="footer-copyright">
+                    © 2026 <strong>TechForge</strong> — Creado por <strong>Jose Edgar Vieyra Calderon</strong>
+                </p>
+                <p class="footer-rights">
+                    Todos los derechos reservados · Morelia, México
+                </p>
             </div>
         </div>
     </footer>
 
     <script src="app.js"></script>
+    <script>
+        // Hero date
+        document.getElementById('hero-date').textContent = new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' });
+    </script>
 </body>
 </html>
