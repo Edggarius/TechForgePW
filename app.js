@@ -1,3 +1,25 @@
+// Imágenes de Unsplash por categoría (sin API key requerida)
+const images = {
+  devops: [
+    'https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=700&q=80',
+    'https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=700&q=80',
+    'https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&q=80',
+    'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80',
+  ],
+  networks: [
+    'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=700&q=80',
+    'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=700&q=80',
+    'https://images.unsplash.com/photo-1605146769289-52f427ec6f21?w=700&q=80',
+    'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=700&q=80',
+  ],
+  gaming: [
+    'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=700&q=80',
+    'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=700&q=80',
+    'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=700&q=80',
+    'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=700&q=80',
+  ],
+};
+
 // En producción reemplazar con: fetch('/api/posts').then(r => r.json())
 const articles = [
   // ── DEVOPS ──────────────────────────────────────────────────────────
@@ -36,6 +58,44 @@ const articles = [
       </ul>
       <p>Guarda <code>AWS_ACCESS_KEY_ID</code> y <code>AWS_SECRET_ACCESS_KEY</code> como GitHub Secrets y usa un IAM role con permisos mínimos: solo <code>ecr:GetAuthorizationToken</code>, <code>ecs:UpdateService</code> y <code>ecs:RegisterTaskDefinition</code>.</p>
       <p>Para producción, agrega un paso de <em>manual approval</em> usando <code>environment: production</code> con reviewers requeridos. El pipeline esperará confirmación antes de desplegar, manteniendo el control sin sacrificar la velocidad de entrega.</p>
+    `
+  },
+  {
+    category: "devops",
+    title: "Backstage + ArgoCD: Tu Internal Developer Platform Lista en 30 Minutos",
+    summary: "Monta un portal de desarrolladores con Backstage que centraliza servicios, docs y pipelines, y conéctalo con ArgoCD para GitOps automático desde el día uno.",
+    date: new Date().toISOString(),
+    content_html: `
+      <p>Platform Engineering es la tendencia DevOps más fuerte de 2026. Según Gartner, el 80% de grandes organizaciones de software tendrán equipos de plataforma este año — y <strong>Backstage</strong> de Spotify se ha convertido en el estándar de facto para Internal Developer Platforms (IDP).</p>
+      <p>La propuesta de valor es simple: en lugar de que cada desarrollador sepa dónde están los docs, los pipelines y las dependencias de cada microservicio, <strong>Backstage centraliza todo en un portal</strong> con catalog, TechDocs y templates de scaffolding.</p>
+      <h3>Setup Básico</h3>
+      <ul>
+        <li><strong>Instalación:</strong> Corre <code>npx @backstage/create-app@latest</code> y selecciona el template por defecto. El proceso genera una app completa en minutos.</li>
+        <li><strong>Software Catalog:</strong> Registra tus microservicios con archivos <code>catalog-info.yaml</code> en cada repo. Backstage los descubre automáticamente vía GitHub integration.</li>
+        <li><strong>TechDocs:</strong> Activa el plugin de documentación y tus <code>mkdocs</code> existentes aparecen renderizados dentro del portal sin configuración extra.</li>
+        <li><strong>ArgoCD Plugin:</strong> Instala <code>@backstage/plugin-argocd</code> para ver el estado de despliegue de cada servicio directamente en su ficha del catalog.</li>
+      </ul>
+      <p>El resultado es que un desarrollador nuevo puede entender toda la arquitectura de la empresa en su primer día, ver el estado de salud de los servicios en tiempo real y lanzar nuevos proyectos con templates pre-configurados que siguen los estándares del equipo.</p>
+      <p>Para integrarlo con <strong>ArgoCD</strong>, apunta cada Application a la rama <code>main</code> del repo de manifiestos de Kubernetes. Backstage consulta la API de ArgoCD y muestra sincronización, health y últimos deploys sin salir del portal.</p>
+    `
+  },
+  {
+    category: "devops",
+    title: "Karpenter en AWS EKS: Auto-Scaling que Recorta Costos un 40%",
+    summary: "Reemplaza el Cluster Autoscaler con Karpenter para aprovisionamiento de nodos en segundos, uso de instancias Spot y consolidación automática que elimina capacidad ociosa.",
+    date: new Date().toISOString(),
+    content_html: `
+      <p><strong>Karpenter</strong> es el reemplazo moderno del Cluster Autoscaler para AWS EKS: mientras el autoscaler tarda 3–5 minutos en aprovisionar un nodo nuevo, Karpenter lo hace en menos de 60 segundos aprovisionando directamente desde la API de EC2, sin grupos de Auto Scaling intermedios.</p>
+      <p>La diferencia real está en la inteligencia de selección de instancias. Karpenter evalúa los requirements de los pods pendientes y escoge la instancia EC2 más eficiente en precio/recurso en tiempo real, incluyendo instancias Spot cuando son elegibles.</p>
+      <h3>Instalación con Helm</h3>
+      <ul>
+        <li>Crea el IRSA (IAM Role for Service Account) con permisos <code>ec2:RunInstances</code>, <code>ec2:TerminateInstances</code> y <code>pricing:GetProducts</code>.</li>
+        <li>Instala con <code>helm install karpenter oci://public.ecr.aws/karpenter/karpenter --namespace karpenter</code> pasando el cluster endpoint y el role ARN.</li>
+        <li>Define un <code>NodePool</code> con las familias de instancia permitidas (<code>m6i</code>, <code>c6i</code>, <code>r6i</code>) y los tipos de capacidad (<code>on-demand</code>, <code>spot</code>).</li>
+      </ul>
+      <h3>Consolidation: El Feature que Justifica la Migración</h3>
+      <p>Activa <code>disruption.consolidationPolicy: WhenUnderutilized</code> en el NodePool y Karpenter evaluará continuamente si varios nodos pequeños pueden reemplazarse por uno más grande con menor costo. En cargas de trabajo variables, esta consolidación automática elimina entre el 20% y 40% del gasto en cómputo sin intervención manual.</p>
+      <p>El playbook de 2026 para EKS es: Karpenter para scaling, KEDA para scaling a nivel de workload y VPA para right-sizing de pods. Los tres juntos dan control granular del costo de infraestructura que el autoscaler clásico simplemente no puede ofrecer.</p>
     `
   },
 
@@ -83,6 +143,43 @@ const articles = [
       <p>Para Wi-Fi 7, crea una SSID exclusiva en la banda de <strong>6 GHz</strong> solo para dispositivos gaming y streaming. Aislar este tráfico elimina la interferencia de dispositivos IoT que compiten por el canal y es la mejora más visible en experiencia de juego.</p>
     `
   },
+  {
+    category: "networks",
+    title: "eero Pro 7 vs ASUS ZenWiFi BQ16 Pro: ¿Cuál Mesh Wi-Fi 7 Vale la Pena en 2026?",
+    summary: "Comparativa real de velocidades, backhaul y facilidad de configuración entre los dos mejores sistemas mesh Wi-Fi 7 del año para casas medianas y grandes.",
+    date: new Date().toISOString(),
+    content_html: `
+      <p>En 2026, los sistemas mesh Wi-Fi 7 han madurado lo suficiente para que valga la pena actualizar — especialmente si tu conexión supera los 500 Mbps o tienes una casa de más de 120 m². Las dos opciones más recomendadas son el <strong>eero Pro 7</strong> (mejor para facilidad de uso) y el <strong>ASUS ZenWiFi BQ16 Pro</strong> (mejor para máxima velocidad y control avanzado).</p>
+      <p>El eero Pro 7 cubre hasta 4,200 m² con un pack de 2 nodos a $449 USD, y destaca por su configuración en menos de 10 minutos desde la app. El ZenWiFi BQ16 Pro entrega velocidades de hasta 3.5 Gbps en la banda de 6 GHz, con arquitectura quad-band que dedica una banda completa al backhaul.</p>
+      <h3>¿Cuándo Elegir Cada Uno?</h3>
+      <ul>
+        <li><strong>eero Pro 7:</strong> Casa de tamaño normal, varios usuarios no técnicos, integración con Alexa/Amazon, sin necesidad de configuración avanzada de QoS o VLANs.</li>
+        <li><strong>ZenWiFi BQ16 Pro:</strong> Gamers o trabajadores remotos que necesitan máxima velocidad, quieren control granular de QoS, VPN integrada en el router o VLAN por SSID.</li>
+        <li><strong>MSI Roamii BE Pro:</strong> Mejor opción bajo $300 para dos nodos — rendimiento sólido sin gastar en el top de gama.</li>
+      </ul>
+      <p>Lo que todos los sistemas Wi-Fi 7 mesh comparten es el <strong>backhaul inalámbrico dedicado</strong>: la comunicación entre nodos no compite con tus dispositivos por la misma banda, lo que elimina el cuello de botella que arruinaba los sistemas mesh Wi-Fi 6 en casas grandes.</p>
+      <p>Si ya tienes un sistema Wi-Fi 6E funcionando bien, no hay urgencia de actualizar. Pero si compras equipo nuevo hoy, el delta de costo entre Wi-Fi 6E y Wi-Fi 7 es de $100–300 y la diferencia en cobertura y latencia lo justifica claramente.</p>
+    `
+  },
+  {
+    category: "networks",
+    title: "Backhaul Dedicado Wi-Fi 7: La Configuración que Duplica tu Velocidad en Toda la Casa",
+    summary: "Cómo activar y verificar que el backhaul inalámbrico de tu sistema mesh usa la banda de 6 GHz exclusiva, separada completamente del tráfico de clientes.",
+    date: new Date().toISOString(),
+    content_html: `
+      <p>El punto débil de la mayoría de sistemas mesh Wi-Fi 6 era el <strong>backhaul compartido</strong>: los nodos satélite se comunicaban con el nodo principal usando la misma banda que tus dispositivos, dividiendo el ancho de banda disponible y creando cuello de botella en casas grandes.</p>
+      <p>Wi-Fi 7 resuelve esto de forma definitiva con la banda de <strong>6 GHz reservada exclusivamente para backhaul</strong> en los sistemas que lo soportan. El resultado es que los nodos satélite tienen su propio "canal privado" y tus dispositivos obtienen el ancho de banda completo de las bandas 2.4 GHz y 5 GHz.</p>
+      <h3>Cómo Verificar que el Backhaul Está Separado</h3>
+      <ul>
+        <li>En ASUS ZenWiFi: ve a <em>System Log → Wireless Log</em> y confirma que los nodos satélite se conectan en la banda <code>6G-1</code> o <code>6G-2</code> dedicada al backhaul, no en la banda de clientes.</li>
+        <li>En TP-Link Deco XE200: la app muestra el canal del backhaul en la vista de cada nodo — debe indicar "6 GHz Backhaul" separado de la conexión de clientes.</li>
+        <li>En eero Pro 7: la app no muestra detalles de backhaul, pero puedes verificarlo con un speedtest desde un dispositivo conectado al nodo satélite — si la velocidad supera el 70% de la del nodo principal, el backhaul dedicado está activo.</li>
+      </ul>
+      <h3>Posicionamiento Óptimo de Nodos</h3>
+      <p>Para que el backhaul inalámbrico funcione al máximo, los nodos deben estar <strong>a menos de 10 metros entre sí con línea de visión</strong> o separados por una sola pared. A más distancia, el backhaul degrada aunque tenga banda dedicada.</p>
+      <p>Si los nodos quedan a más de 15 metros, la solución más efectiva es el <strong>backhaul por cable Ethernet</strong>: conecta los nodos por cable de categoría 6A y desactiva el backhaul inalámbrico. Ganarás latencia ultrabaja y velocidades teóricas de hasta 10 Gbps en los sistemas de gama alta.</p>
+    `
+  },
 
   // ── GAMING ──────────────────────────────────────────────────────────
   {
@@ -121,6 +218,44 @@ const articles = [
       <h3>Reducción de Jitter en Red</h3>
       <p>Para modo cooperativo o invasiones, un jitter mayor a 15ms desincroniza los ataques de otros jugadores. La solución más efectiva es <strong>priorizar tráfico UDP de Steam</strong> en el QoS del router para que los paquetes del juego no compitan con descargas en segundo plano.</p>
       <p>En Wi-Fi, desactiva el modo de ahorro de energía del adaptador en Windows: <em>Administrador de dispositivos → Propiedades del adaptador → Administración de energía → desactivar "permitir que el equipo apague este dispositivo"</em>. Este cambio por sí solo reduce el jitter en Wi-Fi hasta un 30% y es el primer ajuste que debes hacer antes de cualquier configuración de red.</p>
+    `
+  },
+  {
+    category: "gaming",
+    title: "Windows 11 para Gaming 2026: 5 Tweaks que Suben tu FPS sin Tocar el Hardware",
+    summary: "Activa HAGS, Resizable BAR, ajusta el modo de alimentación y desactiva Game Bar correctamente — cambios que impactan directamente en framerate y latencia de entrada.",
+    date: new Date().toISOString(),
+    content_html: `
+      <p>La mayoría de PCs gamer en 2026 dejan FPS sobre la mesa por configuración incorrecta de Windows 11. No se trata de overclocking ni de cambiar componentes: cinco ajustes de software pueden sumar entre 10% y 25% de rendimiento en GPU mid-range como la RTX 4060 o la RX 7600.</p>
+      <p>El más impactante es <strong>Hardware-Accelerated GPU Scheduling (HAGS)</strong>: en lugar de que la CPU gestione la cola de comandos para la GPU, la propia GPU lo maneja directamente. El resultado es menor latencia de entrada y menos micro-stutters en juegos con muchos drawcalls.</p>
+      <h3>Los 5 Tweaks Esenciales</h3>
+      <ul>
+        <li><strong>HAGS:</strong> Configuración → Sistema → Pantalla → Gráficos → Programación de GPU con aceleración de hardware → Activar. Requiere reiniciar.</li>
+        <li><strong>Resizable BAR:</strong> Actívalo desde la BIOS (Above 4G Decoding + Resizable BAR en configuración PCIe). Subeframerates 3–12% en juegos que lo soportan como Cyberpunk 2077 o Hogwarts Legacy.</li>
+        <li><strong>Modo de alimentación:</strong> Panel de control → Opciones de energía → Plan de alto rendimiento. O en PowerShell: <code>powercfg /setactive SCHEME_MIN</code>. Elimina throttling del CPU en picos de carga.</li>
+        <li><strong>Desactivar Game Bar correctamente:</strong> No basta con apagarlo desde Configuración — desactiva también el Xbox Game Monitoring desde el Editor de directivas de grupo local (<code>gpedit.msc</code>). La grabación en segundo plano consume hasta 5% de GPU.</li>
+        <li><strong>Modo de juego (Game Mode):</strong> En Configuración → Juegos → Modo de juego → Activar. Asigna núcleos de CPU con prioridad al proceso del juego y reduce interferencia de procesos en segundo plano.</li>
+      </ul>
+      <p>Combina estos ajustes con el driver más reciente de NVIDIA o AMD — los drivers de 2026 incluyen optimizaciones específicas por juego que se traducen en 5–15 FPS adicionales en títulos populares sin ningún otro cambio. El orden importa: aplica los cambios de BIOS primero, drivers después, y tweaks de Windows al final.</p>
+    `
+  },
+  {
+    category: "gaming",
+    title: "Atomfall y los Mejores Juegos Optimizados para GPU Mid-Range en 2026",
+    summary: "Los 5 títulos que mejor aprovechan GPUs como la RTX 4060 o RX 7600 este año, con configuración óptima para 1080p/144 FPS o 1440p/60 FPS estables.",
+    date: new Date().toISOString(),
+    content_html: `
+      <p>Con el dominio del modelo free-to-play en 2026 y el surgimiento de estudios independientes con presupuestos ajustados, la optimización gráfica ha vuelto a ser una prioridad. <strong>Atomfall</strong> encabeza la lista de juegos más optimizados del año: una RTX 2080 Ti promedia 60 FPS en 4K Ultra, y una RTX 4060 alcanza 144 FPS en 1080p con ajustes medios-altos.</p>
+      <p>La diferencia entre un juego bien optimizado y uno que no lo está es visible inmediatamente: el primero escala suavemente desde hardware básico hasta PC de gama alta sin sacrificar calidad visual. Aquí están los cinco más destacados para GPUs mid-range en 2026.</p>
+      <h3>Top 5 Juegos Optimizados 2026</h3>
+      <ul>
+        <li><strong>Atomfall:</strong> Post-apocalíptico ambientado en Inglaterra. Gráficos de alta fidelidad con motor propio ultraeficiente. Configuración recomendada: Alta en todo, TAA, sin Ray Tracing.</li>
+        <li><strong>Valorant:</strong> Construido desde cero para hardware de bajo-medio rango. Una RTX 4060 supera los 400 FPS en competitivo. Imprescindible reducir Motion Blur y activar Enhanced Pointer Precision off en Windows.</li>
+        <li><strong>Avowed:</strong> RPG de Obsidian en Unreal Engine 5. Sorprendentemente bien optimizado para un juego de mundo abierto — RTX 4060 logra 1440p/60fps en Alto con DLSS Quality.</li>
+        <li><strong>Where Winds Meet:</strong> Wuxia de mundo abierto con motor propio chino. Escenas de combate fluidas incluso en RX 7600 en 1080p/Ultra.</li>
+        <li><strong>Path of Exile 2:</strong> La secuela del ARPG más popular llega optimizada para nuevas APIs (DirectX 12 Ultimate). En 1080p/Medio, la RX 7600 supera los 120 FPS estables en las zonas más densas.</li>
+      </ul>
+      <p>El patrón común en todos estos juegos es el uso de <strong>upscaling moderno</strong>: DLSS 4, FSR 4 o XeSS 2 a calidad "Quality" o "Balanced" te da calidad visual equivalente a resolución nativa a la mitad del costo de rendimiento. Actívalo siempre en lugar de reducir la resolución renderizada manualmente.</p>
     `
   }
 ];
@@ -187,9 +322,9 @@ function renderArticles() {
 
     counts[article.category] = (counts[article.category] || 0) + 1;
 
-    const readTime   = calcReadTime(article.content_html);
-    const dateLabel  = formatDate(article.date || new Date().toISOString());
-    const finalHtml  = injectAds(article.content_html);
+    const readTime  = calcReadTime(article.content_html);
+    const dateLabel = formatDate(article.date || new Date().toISOString());
+    const finalHtml = injectAds(article.content_html);
 
     injectArticleSchema(article);
 
@@ -200,12 +335,18 @@ function renderArticles() {
 
     const isNew    = new Date() - new Date(article.date) < 86400000 * 2;
     const catEmoji = { devops: '⚙️', networks: '📡', gaming: '🎮' };
-    const idx      = (counts[article.category] || 0);
+    const idx      = counts[article.category];
+
+    const imgArr   = images[article.category] || [];
+    const imgUrl   = imgArr[(idx - 1) % imgArr.length] || '';
 
     card.innerHTML = `
       <div class="card-thumbnail">
-        <span class="thumb-emoji">${catEmoji[article.category] || '📄'}</span>
-        <span class="thumb-num">0${idx}</span>
+        ${imgUrl ? `<img src="${imgUrl}" alt="${article.category}" class="thumb-img" loading="lazy">` : ''}
+        <div class="thumb-overlay">
+          <span class="thumb-emoji">${catEmoji[article.category] || '📄'}</span>
+          <span class="thumb-num">0${idx}</span>
+        </div>
       </div>
       <div class="card-body">
         <div class="article-meta">
@@ -229,6 +370,10 @@ function renderArticles() {
     const el = document.getElementById(`count-${cat}`);
     if (el) el.textContent = `${n} art.`;
   });
+
+  // Actualizar stat total de hero
+  const totalEl = document.querySelector('.hero-stats .stat-num');
+  if (totalEl) totalEl.textContent = articles.length;
 }
 
 document.addEventListener('DOMContentLoaded', renderArticles);
