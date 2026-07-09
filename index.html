@@ -12,14 +12,14 @@
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="TechForge | DevOps, Redes Wi-Fi 7 & Gaming Labs">
-    <meta property="og:description" content="Tutoriales técnicos actualizados diariamente por IA.">
+    <meta property="og:description" content="Tutoriales técnicos actualizados diariamente sobre DevOps, redes y gaming.">
     <meta property="og:url" content="https://techforge.dev/">
     <meta property="og:site_name" content="TechForge">
     <meta property="og:locale" content="es_ES">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="TechForge | DevOps, Redes & Gaming Labs">
-    <meta name="twitter:description" content="Tutoriales técnicos actualizados a las 6 AM por IA.">
+    <meta name="twitter:description" content="Tutoriales técnicos sobre DevOps, redes Wi-Fi 7 y gaming actualizados diariamente.">
 
     <script type="application/ld+json">
     {
@@ -48,7 +48,7 @@
             <a href="/" class="logo-link" aria-label="TechForge inicio">
                 <div class="logo-wrap">
                     <p class="logo">Tech<span>Forge</span></p>
-                    <span class="logo-ai-badge">AI</span>
+                    <span class="logo-ai-badge">PRO</span>
                 </div>
             </a>
 
@@ -70,6 +70,18 @@
                     En vivo
                 </div>
             </div>
+
+            <!-- Hamburger (solo móvil) -->
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="#devops-feed"  class="mobile-link" onclick="closeMobileMenu()"><span>⚙️</span> DevOps & Workspace</a>
+            <a href="#networks-feed" class="mobile-link" onclick="closeMobileMenu()"><span>📡</span> Redes & Ecosistemas</a>
+            <a href="#gaming-feed"  class="mobile-link" onclick="closeMobileMenu()"><span>🎮</span> Gaming Labs</a>
         </div>
     </header>
 
@@ -84,7 +96,7 @@
                 Actualizado hoy · <strong id="hero-date"></strong>
             </div>
             <h1 class="hero-title">Tecnología que<br><span class="hero-gradient">mueve el mundo.</span></h1>
-            <p class="hero-subtitle">Tutoriales técnicos generados por IA y publicados cada mañana a las 6 AM — sin intervención humana.</p>
+            <p class="hero-subtitle">Tutoriales técnicos especializados en DevOps, infraestructura de redes y rendimiento gaming — actualizados cada mañana.</p>
             <div class="hero-stats">
                 <div class="stat">
                     <span class="stat-num">6</span>
@@ -108,6 +120,18 @@
     <div class="ad-zone">
         <div class="container">
             <div class="ad-placeholder ad-leaderboard">Espacio Publicitario — Leaderboard 728×90</div>
+        </div>
+    </div>
+
+    <!-- ── TABS DE CATEGORÍA ──────────────────── -->
+    <div class="tabs-bar">
+        <div class="container">
+            <div class="tabs">
+                <button class="tab active" data-tab="all">Todos</button>
+                <button class="tab" data-tab="devops">⚙️ DevOps</button>
+                <button class="tab" data-tab="networks">📡 Redes</button>
+                <button class="tab" data-tab="gaming">🎮 Gaming</button>
+            </div>
         </div>
     </div>
 
@@ -162,7 +186,7 @@
             <!-- Brand -->
             <div class="footer-brand">
                 <p class="footer-logo">Tech<span>Forge</span></p>
-                <p class="footer-tagline">Tecnología que mueve el mundo.<br>Contenido generado por IA, publicado cada día a las 6 AM.</p>
+                <p class="footer-tagline">Tecnología que mueve el mundo.<br>Artículos técnicos especializados, publicados cada día.</p>
             </div>
 
             <!-- Col: Categorías -->
@@ -180,7 +204,7 @@
                 <h4 class="footer-col-title">El Proyecto</h4>
                 <ul class="footer-links-list">
                     <li><a href="#">Acerca de TechForge</a></li>
-                    <li><a href="#">Cómo funciona la IA</a></li>
+                    <li><a href="#">Cómo funciona</a></li>
                     <li><a href="#">Monetización</a></li>
                     <li><a href="https://github.com/Edggarius/TechForgePW" target="_blank" rel="noopener">GitHub</a></li>
                 </ul>
@@ -216,6 +240,48 @@
     <script>
         // Hero date
         document.getElementById('hero-date').textContent = new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' });
+
+        // Hamburger menu
+        const hamburger  = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburger.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            hamburger.classList.toggle('open', isOpen);
+            hamburger.setAttribute('aria-expanded', isOpen);
+        });
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('open');
+            hamburger.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', false);
+        }
+
+        // Cierra el menú si se hace click fuera
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        // Tabs de categoría
+        const tabs  = document.querySelectorAll('.tab');
+        const feeds = document.querySelectorAll('.category-feed');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const selected = tab.dataset.tab;
+                feeds.forEach(feed => {
+                    if (selected === 'all' || feed.dataset.category === selected) {
+                        feed.classList.remove('hidden');
+                    } else {
+                        feed.classList.add('hidden');
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
