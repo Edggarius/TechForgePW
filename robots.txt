@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Recursos que no aportan a la indexación
+Disallow: /api/
+
+Sitemap: https://techforge.dev/sitemap.xml

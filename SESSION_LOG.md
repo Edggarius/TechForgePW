@@ -4,6 +4,35 @@
 
 ---
 
+## Sesión 3 — Auditoría UI/UX + SEO y Archivo por día
+
+### SEO aplicado
+- `og:image` + `twitter:image` (1200×630) — los shares en redes ya no salen rotos
+- Favicon SVG inline (verde, sin request extra)
+- `<meta name="theme-color">` (#052e16) para la barra del navegador móvil
+- `<meta name="keywords">` con términos objetivo
+- **robots.txt** y **sitemap.xml** nuevos (servidos por Express en la raíz)
+- `alt` de las imágenes ahora usa el título del artículo (antes solo la categoría)
+- JSON-LD NewsArticle enriquecido con `image` y `author` (Jose Edgar Vieyra Calderon)
+- Primeras imágenes de cada columna con `loading="eager"` + `fetchpriority="high"`; el resto lazy
+- `width`/`height` en imágenes para evitar layout shift (CLS)
+
+### Accesibilidad / UX
+- Enlace "Saltar al contenido" (skip-link) para navegación por teclado
+- Estados `:focus-visible` con outline verde en enlaces, botones y tabs
+- `aria-current="true"` en el tab activo
+- Botón flotante "volver arriba" (aparece tras 600px de scroll)
+
+### Nueva feature — Archivo por día (backlog)
+- Botón 🗓 "Archivo" en navbar y menú móvil → abre un drawer lateral
+- Los 12 artículos ahora tienen fechas escalonadas (hoy / ayer / hace 2 y 3 días)
+  para poblar el backlog de forma realista
+- El drawer agrupa por fecha, muestra conteo por día y cada entrada salta
+  al artículo con resaltado animado (cierra tab-filtro si es necesario)
+- Cerrable con overlay, botón ✕ o tecla Escape
+
+---
+
 ## Sesión 2 — Rediseño visual (misma fecha)
 - Rediseño completo de `styles.css`: headers por categoría con gradiente de color, tarjetas con stripe superior, badge "NUEVO", navbar con blur/glassmorphism, footer oscuro con gradiente
 - Emojis de categoría (⚙️ DevOps / 📡 Redes / 🎮 Gaming) en los headers

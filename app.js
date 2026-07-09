@@ -260,6 +260,21 @@ const articles = [
   }
 ];
 
+// ── Preprocesamiento: fecha por día, id e imagen fija por artículo ──────
+// Cada artículo dentro de su categoría se escalona un día hacia atrás,
+// generando un backlog real (hoy, ayer, hace 2 días, hace 3 días).
+(function preprocess() {
+  const perCat = {};
+  articles.forEach((a, i) => {
+    a._id = 'article-' + i;
+    const n = perCat[a.category] || 0;
+    a.date = new Date(Date.now() - n * 86400000).toISOString();
+    const imgArr = images[a.category] || [];
+    a._img = imgArr.length ? imgArr[n % imgArr.length] : '';
+    perCat[a.category] = n + 1;
+  });
+})();
+
 // ── Utilidades ──────────────────────────────────────────────────────────
 function calcReadTime(html) {
   const words = html.replace(/<[^>]+>/g, '').trim().split(/\s+/).length;
@@ -300,9 +315,14 @@ function injectArticleSchema(article) {
     "@type":          "NewsArticle",
     "headline":       article.title,
     "description":    article.summary,
+    "image":          article._img ? [article._img] : undefined,
     "datePublished":  article.date,
     "dateModified":   article.date,
     "inLanguage":     "es",
+    "author": {
+      "@type": "Person",
+      "name":  "Jose Edgar Vieyra Calderon"
+    },
     "publisher": {
       "@type": "Organization",
       "name":  "TechForge",
@@ -330,6 +350,7 @@ function renderArticles() {
 
     const card = document.createElement('article');
     card.className  = 'article-card';
+    card.id         = article._id;
     card.setAttribute('itemscope', '');
     card.setAttribute('itemtype', 'https://schema.org/NewsArticle');
 
@@ -337,12 +358,13 @@ function renderArticles() {
     const catEmoji = { devops: '⚙️', networks: '📡', gaming: '🎮' };
     const idx      = counts[article.category];
 
-    const imgArr   = images[article.category] || [];
-    const imgUrl   = imgArr[(idx - 1) % imgArr.length] || '';
+    const imgUrl   = article._img || '';
+    // La primera tarjeta de cada columna está sobre el pliegue: carga prioritaria.
+    const eager    = idx === 1;
 
     card.innerHTML = `
       <div class="card-thumbnail">
-        ${imgUrl ? `<img src="${imgUrl}" alt="${article.category}" class="thumb-img" loading="lazy">` : ''}
+        ${imgUrl ? `<img src="${imgUrl}" alt="${article.title}" class="thumb-img" width="700" height="160" loading="${eager ? 'eager' : 'lazy'}" fetchpriority="${eager ? 'high' : 'auto'}">` : ''}
         <div class="thumb-overlay">
           <span class="thumb-emoji">${catEmoji[article.category] || '📄'}</span>
           <span class="thumb-num">0${idx}</span>

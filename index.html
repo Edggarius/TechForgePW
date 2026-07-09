@@ -8,7 +8,10 @@
     <meta name="description" content="Tutoriales técnicos actualizados diariamente: automatización DevOps con n8n y Jira, configuración de redes Wi-Fi 7 y optimización para gaming competitivo.">
     <meta name="author" content="Jose Edgar Vieyra Calderon">
     <meta name="robots" content="index, follow">
+    <meta name="keywords" content="DevOps, CI/CD, Kubernetes, Platform Engineering, Wi-Fi 7, redes, mesh, gaming, optimización PC, tutoriales tecnología">
+    <meta name="theme-color" content="#052e16">
     <link rel="canonical" href="https://techforge.dev/">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23052e16'/%3E%3Ctext x='50' y='73' font-size='62' font-family='Arial' font-weight='bold' fill='%2334d399' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E">
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="TechForge | DevOps, Redes Wi-Fi 7 & Gaming Labs">
@@ -16,10 +19,15 @@
     <meta property="og:url" content="https://techforge.dev/">
     <meta property="og:site_name" content="TechForge">
     <meta property="og:locale" content="es_ES">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=630&fit=crop&q=80">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="TechForge — DevOps, Redes y Gaming">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="TechForge | DevOps, Redes & Gaming Labs">
     <meta name="twitter:description" content="Tutoriales técnicos sobre DevOps, redes Wi-Fi 7 y gaming actualizados diariamente.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=630&fit=crop&q=80">
 
     <script type="application/ld+json">
     {
@@ -42,6 +50,8 @@
 </head>
 <body>
 
+    <a href="#main-content" class="skip-link">Saltar al contenido</a>
+
     <!-- ── NAVBAR ──────────────────────────────── -->
     <header class="navbar">
         <div class="container nav-content">
@@ -62,6 +72,9 @@
                 <a href="#gaming-feed" class="nav-item">
                     <span class="nav-icon">🎮</span>Gaming
                 </a>
+                <button type="button" class="nav-item" id="open-archive">
+                    <span class="nav-icon">🗓</span>Archivo
+                </button>
             </nav>
 
             <div class="nav-right">
@@ -82,6 +95,7 @@
             <a href="#devops-feed"  class="mobile-link" onclick="closeMobileMenu()"><span>⚙️</span> DevOps & Workspace</a>
             <a href="#networks-feed" class="mobile-link" onclick="closeMobileMenu()"><span>📡</span> Redes & Ecosistemas</a>
             <a href="#gaming-feed"  class="mobile-link" onclick="closeMobileMenu()"><span>🎮</span> Gaming Labs</a>
+            <button type="button" class="mobile-link" id="open-archive-mobile"><span>🗓</span> Archivo por día</button>
         </div>
     </header>
 
@@ -100,7 +114,7 @@
             <div class="hero-stats">
                 <div class="stat">
                     <span class="stat-num">12</span>
-                    <span class="stat-label">Artículos hoy</span>
+                    <span class="stat-label">Artículos</span>
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat">
@@ -236,6 +250,19 @@
         </div>
     </footer>
 
+    <!-- ── ARCHIVO POR DÍA (DRAWER) ────────────── -->
+    <div class="archive-overlay" id="archive-overlay"></div>
+    <aside class="archive-drawer" id="archive-drawer" aria-hidden="true" aria-label="Archivo de noticias por día">
+        <div class="archive-head">
+            <h3>🗓 Archivo por día</h3>
+            <button type="button" class="archive-close" id="archive-close" aria-label="Cerrar archivo">✕</button>
+        </div>
+        <div class="archive-list" id="archive-list"></div>
+    </aside>
+
+    <!-- ── BACK TO TOP ─────────────────────────── -->
+    <button type="button" class="back-to-top" id="back-to-top" aria-label="Volver arriba">↑</button>
+
     <script src="app.js"></script>
     <script>
         // Hero date
@@ -270,8 +297,9 @@
 
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
+                tabs.forEach(t => { t.classList.remove('active'); t.removeAttribute('aria-current'); });
                 tab.classList.add('active');
+                tab.setAttribute('aria-current', 'true');
                 const selected = tab.dataset.tab;
                 feeds.forEach(feed => {
                     if (selected === 'all' || feed.dataset.category === selected) {
@@ -279,6 +307,81 @@
                     } else {
                         feed.classList.add('hidden');
                     }
+                });
+            });
+        });
+
+        // Back to top
+        const btt = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            btt.classList.toggle('visible', window.scrollY > 600);
+        }, { passive: true });
+        btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // Archivo por día (drawer)
+        const archiveDrawer  = document.getElementById('archive-drawer');
+        const archiveOverlay = document.getElementById('archive-overlay');
+
+        function openArchive() {
+            archiveDrawer.classList.add('open');
+            archiveOverlay.classList.add('open');
+            archiveDrawer.setAttribute('aria-hidden', 'false');
+        }
+        function closeArchive() {
+            archiveDrawer.classList.remove('open');
+            archiveOverlay.classList.remove('open');
+            archiveDrawer.setAttribute('aria-hidden', 'true');
+        }
+
+        document.getElementById('open-archive').addEventListener('click', openArchive);
+        const openArchiveMobile = document.getElementById('open-archive-mobile');
+        if (openArchiveMobile) openArchiveMobile.addEventListener('click', () => { closeMobileMenu(); openArchive(); });
+        document.getElementById('archive-close').addEventListener('click', closeArchive);
+        archiveOverlay.addEventListener('click', closeArchive);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeArchive(); });
+
+        // Construir el archivo agrupado por día (usa `articles` y `formatDate` de app.js)
+        document.addEventListener('DOMContentLoaded', () => {
+            const list = document.getElementById('archive-list');
+            if (!list || typeof articles === 'undefined') return;
+            const catEmoji = { devops: '⚙️', networks: '📡', gaming: '🎮' };
+
+            const days = [];
+            articles.forEach(a => { const k = a.date.slice(0, 10); if (!days.includes(k)) days.push(k); });
+            days.sort().reverse();
+
+            list.innerHTML = days.map(k => {
+                const items = articles.filter(a => a.date.slice(0, 10) === k);
+                const label = formatDate(items[0].date);
+                const rows = items.map(a => `
+                    <a href="#${a._id}" class="archive-item" data-target="${a._id}">
+                        <span class="archive-emoji">${catEmoji[a.category] || '📄'}</span>
+                        <span class="archive-title">${a.title}</span>
+                    </a>`).join('');
+                return `
+                    <div class="archive-day">
+                        <div class="archive-day-head">
+                            <span class="archive-day-label">${label}</span>
+                            <span class="archive-day-count">${items.length}</span>
+                        </div>
+                        ${rows}
+                    </div>`;
+            }).join('');
+
+            list.querySelectorAll('.archive-item').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closeArchive();
+                    const target = document.getElementById(el.dataset.target);
+                    if (!target) return;
+                    // Si un tab de categoría oculta el artículo, volver a "Todos"
+                    const allTab = document.querySelector('.tab[data-tab="all"]');
+                    if (allTab && !allTab.classList.contains('active')) allTab.click();
+                    setTimeout(() => {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        target.classList.add('flash');
+                        setTimeout(() => target.classList.remove('flash'), 1600);
+                    }, 60);
                 });
             });
         });
