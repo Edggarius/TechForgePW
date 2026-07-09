@@ -4,6 +4,26 @@
 
 ---
 
+## Cierre 2026-07-09 — Es seguro apagar la PC
+
+Todo persiste y arranca solo al reiniciar. Verificado:
+- Código commiteado y pusheado a GitHub (main)
+- PostgreSQL: datos en disco + servicio `enabled` (arranca en boot)
+- nginx: `enabled`
+- **PM2: `pm2 save` hecho + `pm2 startup` configurado** → `pm2-edggarius.service`
+  `enabled`. El server revive solo tras un reinicio
+- Al encender mañana: `http://192.168.1.239` debería estar arriba sin hacer nada
+
+Si algo no levantara: `pm2 resurrect` (o `pm2 start server.js --name techforge`).
+
+### Pendiente para mañana (para que lo vean tus amigos por internet)
+1. Port forwarding en el router: puerto 80/443 externo → 192.168.1.239
+2. Dominio: DuckDNS gratis vs propio (~$10/año) apuntando a la IP pública
+3. Certbot + HTTPS (Let's Encrypt) en nginx
+4. Verificar que el ISP no bloquee el puerto 80
+
+---
+
 ## Sesión 4 — Filtro 24h, color de cards, lector modal y conexión a la DB
 
 ### Feed de últimas 24 h
