@@ -6,7 +6,7 @@
 :root {
     /* Surfaces */
     --bg:          #dcfce7;
-    --card:        #ffffff;
+    --card:        #f3f8f4;
     --dark:        #052e16;
     --dark-2:      #064e3b;
     --dark-3:      #065f46;
@@ -1210,4 +1210,82 @@ button.mobile-link {
 @keyframes cardFlash {
     0%, 100% { box-shadow: var(--shadow-card); }
     20%, 60% { box-shadow: 0 0 0 3px var(--d3), 0 20px 50px rgba(6,78,59,0.25); }
+}
+
+/* ═══════════════════════════════════════════
+   LECTOR DE ARTÍCULOS (MODAL)
+   ═══════════════════════════════════════════ */
+.reader-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(6,8,18,0.55);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s var(--ease), visibility 0.25s;
+    z-index: 320;
+}
+.reader-overlay.open { opacity: 1; visibility: visible; }
+
+.reader-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -46%);
+    width: 720px;
+    max-width: 92vw;
+    max-height: 86vh;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 30px 80px rgba(6,78,59,0.3);
+    z-index: 330;
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), visibility 0.25s;
+}
+.reader-modal.open { opacity: 1; visibility: visible; transform: translate(-50%, -50%); }
+
+.reader-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: var(--dark);
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: transform 0.15s;
+}
+.reader-close:hover { transform: scale(1.08); }
+
+.reader-body { padding: 34px 36px 38px; overflow-y: auto; }
+
+.reader-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding-right: 40px;
+}
+.reader-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 20px;
+}
+
+@media (max-width: 480px) {
+    .reader-body { padding: 40px 20px 26px; }
+    .reader-title { font-size: 1.3rem; }
 }

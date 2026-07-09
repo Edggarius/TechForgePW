@@ -4,6 +4,38 @@
 
 ---
 
+## Sesión 4 — Filtro 24h, color de cards, lector modal y conexión a la DB
+
+### Feed de últimas 24 h
+- `renderArticles()` ahora oculta del feed las noticias con más de 24 h;
+  siguen disponibles en el Archivo por día
+- Stat del hero muestra los "Publicados hoy" (frescos), no el total
+
+### Color de las cards (criterio SEO/UX)
+- Cambian de blanco puro a `#f3f8f4` (verde-papel suave). Se mantiene
+  contraste AAA para no castigar legibilidad/accesibilidad (factores
+  indirectos de ranking); un color oscuro habría reducido el contraste
+
+### Lector modal
+- Al abrir un artículo desde el Archivo se muestra en un modal (funciona
+  igual para noticias frescas y antiguas, que ya no existen como card en el DOM)
+- Cerrable con ✕, overlay o Escape; reutiliza los estilos de `.article-content`
+
+### Conexión a PostgreSQL (lo grande)
+- **Fuente única de datos:** `seed-data.js` (módulo UMD) usado por el
+  navegador (respaldo) y por Node (siembra) — sin contenido duplicado
+- **`app.js`** ahora hace `fetch('/api/posts')` al cargar; si la API falla,
+  usa `SEED_DATA` como respaldo local. Mapea filas de la DB al formato del front
+- **Esquema:** nueva columna `image_url`; migración idempotente
+  (`ADD COLUMN IF NOT EXISTS`) + índice por `created_at`
+- **`seed.js`** (`npm run seed`): siembra los 12 artículos con fechas
+  escalonadas e imágenes. Upsert por `slug`
+- **`server.js`:** verifica el esquema al arrancar y el cron ahora guarda
+  `image_url` + `created_at` por artículo generado
+- Verificado: API devuelve 12 posts, 6 frescos en feed, 6 en archivo
+
+---
+
 ## Sesión 3 — Auditoría UI/UX + SEO y Archivo por día
 
 ### SEO aplicado

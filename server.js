@@ -50,6 +50,32 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
+// Imágenes por categoría para los artículos generados por el cron
+const CATEGORY_IMAGES = {
+  devops:   'https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=700&q=80',
+  networks: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=700&q=80',
+  gaming:   'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=700&q=80',
+};
+
+// Asegura la tabla y columnas necesarias al arrancar
+async function ensureSchema() {
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS posts (
+      id SERIAL PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      slug VARCHAR(255) UNIQUE NOT NULL,
+      category VARCHAR(50) NOT NULL,
+      summary TEXT,
+      content_html TEXT NOT NULL,
+      image_url TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await db.query(`ALTER TABLE posts ADD COLUMN IF NOT EXISTS image_url TEXT;`);
+  await db.query(`CREATE INDEX IF NOT EXISTS idx_posts_category ON posts(category);`);
+  await db.query(`CREATE INDEX IF NOT EXISTS idx_posts_created_at ON posts(created_at DESC);`);
+}
+
 // Simulación de recolección de datos (Aquí puedes conectar tus APIs/RSS en el futuro)
 async function obtenerFuentesCrudas() {
   return `
@@ -117,13 +143,16 @@ ${fuentes}
     const data = JSON.parse(rawText);
 
     for (const articulo of data.articulos) {
+      const imageUrl = CATEGORY_IMAGES[articulo.category] || null;
       const query = `
-        INSERT INTO posts (title, slug, category, summary, content_html)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO posts (title, slug, category, summary, content_html, image_url, created_at)
+        VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)
         ON CONFLICT (slug) DO UPDATE
-        SET title = EXCLUDED.title, content_html = EXCLUDED.content_html, summary = EXCLUDED.summary;
+        SET title = EXCLUDED.title, content_html = EXCLUDED.content_html,
+            summary = EXCLUDED.summary, image_url = EXCLUDED.image_url,
+            created_at = EXCLUDED.created_at;
       `;
-      const values = [articulo.title, articulo.slug, articulo.category, articulo.summary, articulo.content_html];
+      const values = [articulo.title, articulo.slug, articulo.category, articulo.summary, articulo.content_html, imageUrl];
       await db.query(query, values);
     }
 
@@ -135,8 +164,10 @@ ${fuentes}
 
 // Conexión inicial, servidor HTTP y cron
 db.connect()
-  .then(() => {
+  .then(async () => {
     console.log("🐘 Conectado a PostgreSQL.");
+    await ensureSchema();
+    console.log("🗄️  Esquema verificado.");
 
     cron.schedule('0 6 * * *', () => {
       actualizarPortalTech();

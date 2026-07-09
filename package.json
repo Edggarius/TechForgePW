@@ -4,7 +4,8 @@
   "description": "Automatización diaria para portal dinámico de anuncios TechForge",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed": "node seed.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.20.0",

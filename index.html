@@ -113,8 +113,8 @@
             <p class="hero-subtitle">Tutoriales técnicos especializados en DevOps, infraestructura de redes y rendimiento gaming — actualizados cada mañana.</p>
             <div class="hero-stats">
                 <div class="stat">
-                    <span class="stat-num">12</span>
-                    <span class="stat-label">Artículos</span>
+                    <span class="stat-num">6</span>
+                    <span class="stat-label">Publicados hoy</span>
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat">
@@ -260,9 +260,17 @@
         <div class="archive-list" id="archive-list"></div>
     </aside>
 
+    <!-- ── LECTOR DE ARTÍCULOS (MODAL) ─────────── -->
+    <div class="reader-overlay" id="reader-overlay"></div>
+    <div class="reader-modal" id="reader-modal" role="dialog" aria-modal="true" aria-hidden="true">
+        <button type="button" class="reader-close" id="reader-close" aria-label="Cerrar artículo">✕</button>
+        <div class="reader-body" id="reader-body"></div>
+    </div>
+
     <!-- ── BACK TO TOP ─────────────────────────── -->
     <button type="button" class="back-to-top" id="back-to-top" aria-label="Volver arriba">↑</button>
 
+    <script src="seed-data.js"></script>
     <script src="app.js"></script>
     <script>
         // Hero date
@@ -338,10 +346,45 @@
         if (openArchiveMobile) openArchiveMobile.addEventListener('click', () => { closeMobileMenu(); openArchive(); });
         document.getElementById('archive-close').addEventListener('click', closeArchive);
         archiveOverlay.addEventListener('click', closeArchive);
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeArchive(); });
 
-        // Construir el archivo agrupado por día (usa `articles` y `formatDate` de app.js)
-        document.addEventListener('DOMContentLoaded', () => {
+        // Lector de artículos (modal) — usado por el archivo
+        const readerModal   = document.getElementById('reader-modal');
+        const readerOverlay = document.getElementById('reader-overlay');
+        const readerBody    = document.getElementById('reader-body');
+        const readerEmoji   = { devops: '⚙️', networks: '📡', gaming: '🎮' };
+
+        function openReader(a) {
+            const rt = calcReadTime(a.content_html);
+            const dl = formatDate(a.date);
+            readerBody.innerHTML = `
+                <div data-category="${a.category}">
+                    <div class="reader-meta">
+                        <span class="category-badge">${a.category}</span>
+                        <span class="meta-pill">${readerEmoji[a.category] || '📄'} ${a.category}</span>
+                        <span class="meta-pill">⏱ ${rt} min</span>
+                        <span class="meta-pill">· ${dl}</span>
+                    </div>
+                    <h1 class="reader-title">${a.title}</h1>
+                    <div class="article-content">${a.content_html}</div>
+                </div>`;
+            readerModal.classList.add('open');
+            readerOverlay.classList.add('open');
+            readerModal.setAttribute('aria-hidden', 'false');
+            readerBody.scrollTop = 0;
+        }
+        function closeReader() {
+            readerModal.classList.remove('open');
+            readerOverlay.classList.remove('open');
+            readerModal.setAttribute('aria-hidden', 'true');
+        }
+        document.getElementById('reader-close').addEventListener('click', closeReader);
+        readerOverlay.addEventListener('click', closeReader);
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeArchive(); closeReader(); } });
+
+        // Construir el archivo agrupado por día (se dispara cuando app.js
+        // ya cargó los datos desde la API o el respaldo local)
+        window.addEventListener('articles-ready', () => {
             const list = document.getElementById('archive-list');
             if (!list || typeof articles === 'undefined') return;
             const catEmoji = { devops: '⚙️', networks: '📡', gaming: '🎮' };
@@ -372,16 +415,8 @@
                 el.addEventListener('click', (e) => {
                     e.preventDefault();
                     closeArchive();
-                    const target = document.getElementById(el.dataset.target);
-                    if (!target) return;
-                    // Si un tab de categoría oculta el artículo, volver a "Todos"
-                    const allTab = document.querySelector('.tab[data-tab="all"]');
-                    if (allTab && !allTab.classList.contains('active')) allTab.click();
-                    setTimeout(() => {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        target.classList.add('flash');
-                        setTimeout(() => target.classList.remove('flash'), 1600);
-                    }, 60);
+                    const a = articles.find(x => x._id === el.dataset.target);
+                    if (a) openReader(a);
                 });
             });
         });
