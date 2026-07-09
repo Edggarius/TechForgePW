@@ -55,11 +55,12 @@
         <div class="container nav-content">
             <a href="/" class="logo-link" aria-label="TechForge inicio">
                 <p class="logo">Tech<span>Forge</span></p>
+                <span class="logo-badge">Beta</span>
             </a>
             <nav class="nav-links" aria-label="Categorías">
-                <a href="#devops-feed">DevOps & Infra</a>
-                <a href="#networks-feed">Redes</a>
-                <a href="#gaming-feed">Gaming Labs</a>
+                <a href="#devops-feed"><span class="nav-dot" style="background:#1d4ed8"></span>DevOps & Infra</a>
+                <a href="#networks-feed"><span class="nav-dot" style="background:#059669"></span>Redes</a>
+                <a href="#gaming-feed"><span class="nav-dot" style="background:#7c3aed"></span>Gaming Labs</a>
             </nav>
         </div>
     </header>
@@ -84,7 +85,7 @@
 
         <section id="devops-feed" class="category-feed" data-category="devops" aria-labelledby="label-devops">
             <div class="category-header">
-                <span class="category-dot" aria-hidden="true"></span>
+                <span class="category-icon">⚙️</span>
                 <h2 id="label-devops">DevOps & Workspace</h2>
                 <span class="article-count" id="count-devops"></span>
             </div>
@@ -93,7 +94,7 @@
 
         <section id="networks-feed" class="category-feed" data-category="networks" aria-labelledby="label-networks">
             <div class="category-header">
-                <span class="category-dot" aria-hidden="true"></span>
+                <span class="category-icon">📡</span>
                 <h2 id="label-networks">Redes & Ecosistemas</h2>
                 <span class="article-count" id="count-networks"></span>
             </div>
@@ -102,7 +103,7 @@
 
         <section id="gaming-feed" class="category-feed" data-category="gaming" aria-labelledby="label-gaming">
             <div class="category-header">
-                <span class="category-dot" aria-hidden="true"></span>
+                <span class="category-icon">🎮</span>
                 <h2 id="label-gaming">Gaming Labs</h2>
                 <span class="article-count" id="count-gaming"></span>
             </div>
@@ -114,7 +115,12 @@
     <footer class="site-footer">
         <div class="container footer-content">
             <p class="footer-logo">Tech<span>Forge</span></p>
-            <p class="footer-copy">Contenido técnico generado y actualizado automáticamente todos los días. Los artículos son de carácter informativo.</p>
+            <p class="footer-tagline">Contenido técnico generado y actualizado automáticamente todos los días a las 6 AM.</p>
+            <div class="footer-links">
+                <a href="#devops-feed">DevOps</a>
+                <a href="#networks-feed">Redes</a>
+                <a href="#gaming-feed">Gaming</a>
+            </div>
         </div>
     </footer>
 

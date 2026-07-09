@@ -198,15 +198,22 @@ function renderArticles() {
     card.setAttribute('itemscope', '');
     card.setAttribute('itemtype', 'https://schema.org/NewsArticle');
 
+    const isNew = new Date() - new Date(article.date) < 86400000 * 2;
+
     card.innerHTML = `
-      <div class="article-meta">
-        <span class="category-badge">${article.category}</span>
-        <span class="meta-pill">⏱ ${readTime} min</span>
-        <span class="meta-pill">${dateLabel}</span>
+      <div class="card-stripe"></div>
+      <div class="card-body">
+        <div class="article-meta">
+          <span class="category-badge">${article.category}</span>
+          ${isNew ? '<span class="badge-new">Nuevo</span>' : ''}
+          <span class="meta-divider"></span>
+          <span class="meta-pill">⏱ ${readTime} min</span>
+          <span class="meta-pill">· ${dateLabel}</span>
+        </div>
+        <h3 itemprop="headline">${article.title}</h3>
+        <p class="summary" itemprop="description">${article.summary}</p>
+        <div class="article-content" itemprop="articleBody">${finalHtml}</div>
       </div>
-      <h3 itemprop="headline">${article.title}</h3>
-      <p class="summary" itemprop="description">${article.summary}</p>
-      <div class="article-content" itemprop="articleBody">${finalHtml}</div>
     `;
 
     container.appendChild(card);
